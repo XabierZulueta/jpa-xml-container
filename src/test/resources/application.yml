@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:tc:mariadb://localhost:3306/mydatabase?TC_INITSCRIPT=file:src/test/resources/sql/tables.sql
+    username: myuser
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default-schema: mydatabase
+jakarta:
+  persistence:
+    jdbc:
+      url: jdbc:tc:mariadb://localhost:3306/mydatabase?TC_INITSCRIPT=file:src/test/resources/sql/tables.sql

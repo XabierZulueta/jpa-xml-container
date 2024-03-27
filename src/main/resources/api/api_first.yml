@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: CBS Queries
+  description: CBS Queries
+  version: 1.0-SNAPSHOT
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: queries
+    description: Queries
+  - name: filters
+    description: Filters
+paths:
+  /commercial-structure:
+    post:
+      tags:
+        - queries
+      summary: Get commercial structure
+      description: Get commercial structure
+      operationId: getCommercialStructure
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommercialStructureRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommercialStructureResponse'
+        '400':
+          description: Error
+  /portfolio:
+    get:
+      tags:
+        - queries
+      summary: Get portfolio
+      description: Get portfolio
+      operationId: getPortfolio
+      parameters:
+        - name: initialDate
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 01/01/2021
+        - name: finalDate
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 01/01/2023
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/PortfolioResponse'
+
+
+components:
+  schemas:
+    CommercialStructureRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: number
+    CommercialStructureResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/CommercialStructureData'
+    CommercialStructureData:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommercialStructureData'
+      example:
+        {
+          "id": 0,
+          "name": "First",
+          "children": [
+            {
+              "id": 0,
+              "name": "Second",
+              "children": [
+              ]
+            }
+          ]
+        }
+
+    PortfolioResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/PortfolioData'
+    PortfolioData:
+      type: object
+      properties:
+        initialDate:
+          type: string
+          example: 01/01/2021
+        finalDate:
+          type: string
+          example: 01/01/2023
+        amount:
+          type: number
+          multipleOf: 0.01
+          example: 1.29
+        society:
+          type: string
+          example: CACEIS
